@@ -18,6 +18,19 @@ CREATE INDEX ON measurement_y2022m01 (time);
 CREATE INDEX ON measurement_y2022m02 (time);
 CREATE INDEX ON measurement_y2022m03 (time);
 
+SELECT 
+    tablename, indexname
+FROM
+    pg_indexes
+WHERE
+    tablename LIKE 'measurement%';
+
+--       tablename      |              indexname
+-- ---------------------+--------------------------------------
+--  measurementy2022m01 | measurementy2022m01_time_idx
+--  measurementy2022m02 | measurementy2022m02_time_idx
+--  measurementy2022m03 | measurementy2022m03_time_idx
+
 
 CREATE OR REPLACE FUNCTION measurement_insert_trigger()
 RETURNS TRIGGER AS $$

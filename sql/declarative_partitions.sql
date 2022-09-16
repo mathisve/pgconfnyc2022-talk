@@ -65,14 +65,9 @@ WHERE
 --       tablename      |              indexname
 -- ---------------------+--------------------------------------
 --  measurement         | measurement_time_idx
---  measurement         | measurement_sensor_value_idx
 --  measurementy2022m01 | measurementy2022m01_time_idx
---  measurementy2022m01 | measurementy2022m01_sensor_value_idx
 --  measurementy2022m02 | measurementy2022m02_time_idx
---  measurementy2022m02 | measurementy2022m02_sensor_value_idx
 --  measurementy2022m03 | measurementy2022m03_time_idx
---  measurementy2022m03 | measurementy2022m03_sensor_value_idx
--- (8 rows)
 
 SET enable_partition_pruning = on;
 
@@ -103,5 +98,5 @@ EXPLAIN ANALYZE SELECT * FROM measurement WHERE time > '2022-03-01';
 
 INSERT INTO measurement (time, sensorID, sensor_value) SELECT 
     (timestamptz '2022-01-01' + random() * (timestamptz '2022-04-01' - timestamptz '2022-01-01')), 
-    generate_series(0,500000),
+    generate_series(0,10000000),
     random()*2-random();
