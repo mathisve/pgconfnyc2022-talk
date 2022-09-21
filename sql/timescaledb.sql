@@ -87,3 +87,73 @@ SELECT compress_chunk(i, if_not_compressed=>true)
 
 SELECT add_retention_policy('measurement', INTERVAL '5 years');
 
+
+SELECT show_chunks('measurement');
+--                show_chunks
+-- -----------------------------------------
+--  _timescaledb_internal._hyper_4_26_chunk
+--  _timescaledb_internal._hyper_4_27_chunk
+--  _timescaledb_internal._hyper_4_28_chunk
+--  _timescaledb_internal._hyper_4_29_chunk
+--  _timescaledb_internal._hyper_4_30_chunk
+--  _timescaledb_internal._hyper_4_31_chunk
+--  _timescaledb_internal._hyper_4_32_chunk
+--  _timescaledb_internal._hyper_4_33_chunk
+--  _timescaledb_internal._hyper_4_34_chunk
+--  _timescaledb_internal._hyper_4_35_chunk
+--  _timescaledb_internal._hyper_4_36_chunk
+--  _timescaledb_internal._hyper_4_37_chunk
+--  _timescaledb_internal._hyper_4_38_chunk
+--  _timescaledb_internal._hyper_4_39_chunk
+--  _timescaledb_internal._hyper_4_40_chunk
+--  _timescaledb_internal._hyper_4_41_chunk
+--  _timescaledb_internal._hyper_4_42_chunk
+--  _timescaledb_internal._hyper_4_43_chunk
+--  _timescaledb_internal._hyper_4_44_chunk
+--  _timescaledb_internal._hyper_4_45_chunk
+--  _timescaledb_internal._hyper_4_46_chunk
+--  _timescaledb_internal._hyper_4_47_chunk
+--  _timescaledb_internal._hyper_4_48_chunk
+--  _timescaledb_internal._hyper_4_49_chunk
+--  _timescaledb_internal._hyper_4_50_chunk
+--  _timescaledb_internal._hyper_4_51_chunk
+--  _timescaledb_internal._hyper_4_52_chunk
+--  _timescaledb_internal._hyper_4_53_chunk
+--  _timescaledb_internal._hyper_4_54_chunk
+--  _timescaledb_internal._hyper_4_55_chunk
+--  _timescaledb_internal._hyper_4_56_chunk
+--  _timescaledb_internal._hyper_4_57_chunk
+--  _timescaledb_internal._hyper_4_58_chunk
+--  _timescaledb_internal._hyper_4_59_chunk
+--  _timescaledb_internal._hyper_4_60_chunk
+--  _timescaledb_internal._hyper_4_61_chunk
+--  _timescaledb_internal._hyper_4_62_chunk
+--  _timescaledb_internal._hyper_4_63_chunk
+--  _timescaledb_internal._hyper_4_64_chunk
+--  _timescaledb_internal._hyper_4_65_chunk
+--  _timescaledb_internal._hyper_4_66_chunk
+--  _timescaledb_internal._hyper_4_67_chunk
+--  _timescaledb_internal._hyper_4_68_chunk
+--  _timescaledb_internal._hyper_4_69_chunk
+--  _timescaledb_internal._hyper_4_70_chunk
+--  _timescaledb_internal._hyper_4_71_chunk
+--  _timescaledb_internal._hyper_4_72_chunk
+--  _timescaledb_internal._hyper_4_73_chunk
+--  _timescaledb_internal._hyper_4_74_chunk
+--  _timescaledb_internal._hyper_4_75_chunk
+--  _timescaledb_internal._hyper_4_76_chunk
+--  _timescaledb_internal._hyper_4_77_chunk
+--  _timescaledb_internal._hyper_4_78_chunk
+
+SELECT drop_chunks('measurement', INTERVAL '5 months');
+SELECT reorder_chunk('_timescaledb_internal._hyper_4_78_chunk', 'measurement_time_idx');
+
+SELECT attach_tablespace('disk2', 'measurement');
+SELECT move_chunk(
+  chunk => '_timescaledb_internal._hyper_4_78_chunk',
+  destination_tablespace => 'disk2',
+  index_destination_tablespace => 'disk2',
+  reorder_index => 'measurement_time_idx',
+);
+
+SELECT detach_tablespaces('measurement');
